@@ -1,0 +1,60 @@
+[build-system]
+requires = ["hatchling>=1.27.0"]
+build-backend = "hatchling.build"
+
+[project]
+name = "soundtap"
+version = "0.1.0"
+description = "Desktop app that plays user-configured MP3 sound effects for keyboard and mouse input."
+readme = "README.md"
+requires-python = ">=3.11"
+dependencies = [
+    "pillow>=11.3.0",
+    "platformdirs>=4.4.0",
+    "pygame>=2.6.1",
+    "pynput>=1.8.1",
+    "pystray>=0.19.5",
+]
+
+[project.scripts]
+soundtap = "soundtap.__main__:main"
+
+[dependency-groups]
+dev = [
+    "mypy>=1.18.2",
+    "pyinstaller>=6.16.0",
+    "pytest>=8.4.2",
+    "ruff>=0.13.0",
+]
+
+[tool.uv]
+package = true
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/soundtap"]
+
+[tool.hatch.build.targets.sdist]
+include = [
+    "src/soundtap",
+    "tests",
+    "README.md",
+    "AGENTS.md",
+    "docs",
+    "main.py",
+]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+
+[tool.ruff]
+target-version = "py311"
+
+[tool.mypy]
+python_version = "3.11"
+files = ["src", "tests", "main.py"]
+ignore_missing_imports = true
+warn_unused_configs = true
+
+[tool.pyright]
+include = ["src", "tests", "main.py"]
+extraPaths = ["src"]

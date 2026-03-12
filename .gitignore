@@ -1,0 +1,32 @@
+# Python-generated files
+__pycache__/
+*.py[oc]
+build/
+dist/
+release/
+wheels/
+*.egg-info
+.coverage
+.coverage.*
+htmlcov/
+
+# PyInstaller
+*.spec.tmp
+
+# Virtual environments
+.venv
+
+# Tool caches
+.mypy_cache/
+.pytest_cache/
+.ruff_cache/
+
+# Local tool state
+.opencode/
+
+# OS / editor files
+.DS_Store
+Thumbs.db
+Desktop.ini
+.idea/
+.vscode/
