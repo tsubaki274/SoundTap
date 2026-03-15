@@ -48,9 +48,9 @@ master_volume = 80
 scroll_cooldown_ms = 150
 
 [hotkeys]
-toggle_enabled = "<ctrl>+<alt>+s"
-toggle_mute = "<ctrl>+<alt>+m"
-reload_config = "<ctrl>+<alt>+r"
+起動/停止 = "<ctrl>+<alt>+s"
+ミュート = "<ctrl>+<alt>+m"
+設定再読み込み = "<ctrl>+<alt>+r"
 
 [keyboard.default]
 path = "C:/Sounds/type.mp3"
@@ -109,13 +109,12 @@ volume = 40
 - `hotkeys.toggle_mute` はミュート切替です。初期値は `Ctrl+Alt+M` です
 - `hotkeys.reload_config` は設定再読み込みです。初期値は `Ctrl+Alt+R` です
 - `keyboard.default` を設定すると、すべてのキー入力に同じ音を一括適用できます
-- `mouse.default` を設定すると、個別設定がないすべてのマウス入力に同じ音を一括適用できます
-- 個別キー設定 (`keyboard.a` など) がある場合は、`keyboard.default` より個別設定を優先します
-- 個別マウス設定 (`mouse.left` など) がある場合は、`mouse.default` より個別設定を優先します
+- `mouse.default` を設定すると、すべてのマウス入力に同じ音を一括適用できます
+- 個別キー設定がある場合は、`keyboard.default` より個別設定を優先します
+- 個別マウス設定がある場合は、`mouse.default` より個別設定を優先します
 - キーボードは通常キーだけでなく、Enter、Space、Shift、Ctrl、Alt、Esc などの特殊キーにも反応します
 - キー名は `a`、`b`、`1`、`enter`、`space`、`escape`、`shift`、`ctrl`、`alt` のように書けます
 - マウスは `left`、`right`、`middle`、`wheel_up`、`wheel_down` を設定できます
-- 実際の再生音量は `master_volume * volume` を内部で 0.0 から 1.0 に正規化して計算します
 - Windows パスを貼るときは `C:/Sounds/a.mp3` のように `/` を使うか、`C:\\Sounds\\a.mp3` のように `\\` を重ねて書いてください
 - キーボードは押した瞬間の 1 回だけ反応し、押しっぱなしによるキーリピートは無視します
 - マウスはクリックした瞬間だけ反応し、ホイールはクールダウン間隔をあけて反応します
