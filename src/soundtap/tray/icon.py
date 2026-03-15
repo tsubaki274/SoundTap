@@ -65,5 +65,9 @@ class TrayIconApp:
             MenuItem("終了", quit_app),
         )
 
+        def setup(tray_icon: Any) -> None:
+            tray_icon.visible = True
+            self._app.start()
+
         icon = Icon("SoundTap", create_image(), "SoundTap", menu)
-        icon.run(setup=lambda tray_icon: self._app.start())
+        icon.run(setup=setup)

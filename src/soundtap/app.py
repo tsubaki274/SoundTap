@@ -46,7 +46,10 @@ class SoundTapApp:
 
     def run(self) -> None:
         self.reload_settings()
-        self._start_hotkeys()
+        try:
+            self._start_hotkeys()
+        except Exception:
+            logger.exception("Failed to start SoundTap hotkeys")
         tray_app = TrayIconApp(self)
         tray_app.run()
 
@@ -189,14 +192,20 @@ class SoundTapApp:
         def on_reload_config() -> None:
             self.reload_settings()
 
-        self._hotkey_manager = GlobalHotkeyManager(
-            {
-                self._settings.hotkeys["toggle_enabled"]: on_toggle_enabled,
-                self._settings.hotkeys["toggle_mute"]: on_toggle_mute,
-                self._settings.hotkeys["reload_config"]: on_reload_config,
-            }
-        )
-        self._hotkey_manager.start()
+        hotkey_actions = {
+            self._settings.hotkeys["toggle_enabled"]: on_toggle_enabled,
+            self._settings.hotkeys["toggle_mute"]: on_toggle_mute,
+            self._settings.hotkeys["reload_config"]: on_reload_config,
+        }
+
+        try:
+            manager = GlobalHotkeyManager(hotkey_actions)
+            manager.start()
+        except Exception:
+            logger.exception("Failed to start SoundTap hotkeys")
+            return
+
+        self._hotkey_manager = manager
 
     def _stop_hotkeys(self) -> None:
         if self._hotkey_manager is None:

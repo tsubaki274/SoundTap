@@ -2,6 +2,7 @@ from __future__ import annotations
 
 import logging
 import re
+import sys
 import tomllib
 from dataclasses import dataclass, field
 from pathlib import Path
@@ -13,6 +14,7 @@ from soundtap.hooks.hotkeys import (
     DEFAULT_HOTKEY_RELOAD_CONFIG,
     DEFAULT_HOTKEY_TOGGLE_ENABLED,
     DEFAULT_HOTKEY_TOGGLE_MUTE,
+    is_valid_hotkey_expression,
 )
 from soundtap.hooks.keyboard import normalize_key_name
 from soundtap.hooks.mouse import normalize_mouse_button_name
@@ -208,8 +210,15 @@ def _parse_hotkeys(hotkeys_section: object) -> dict[str, str]:
     parsed_hotkeys = defaults.copy()
     for key, default_value in defaults.items():
         configured_value = hotkeys_section.get(key, default_value)
-        if isinstance(configured_value, str) and configured_value.strip():
-            parsed_hotkeys[key] = configured_value.strip()
+        if not isinstance(configured_value, str) or not configured_value.strip():
+            continue
+
+        normalized_value = configured_value.strip()
+        if not is_valid_hotkey_expression(normalized_value):
+            logger.warning("Ignored invalid hotkey for %s", key)
+            continue
+
+        parsed_hotkeys[key] = normalized_value
 
     return parsed_hotkeys
 
@@ -353,5 +362,28 @@ def _coerce_volume(value: object, context: str) -> float | None:
 
 
 def _is_disallowed_sound_path(path: Path) -> bool:
+    return _is_unc_path(path) or _is_windows_network_drive(path)
+
+
+def _is_unc_path(path: Path) -> bool:
     path_text = str(path)
-    return path_text.startswith("\\\\")
+    return path_text.startswith("\\\\") or path.as_posix().startswith("//")
+
+
+def _is_windows_network_drive(path: Path) -> bool:
+    if sys.platform != "win32":
+        return False
+
+    drive = path.drive
+    if not drive or drive.startswith("\\\\"):
+        return False
+
+    try:
+        import ctypes
+    except ImportError:
+        return False
+
+    drive_root = f"{drive}\\"
+    drive_type = ctypes.windll.kernel32.GetDriveTypeW(drive_root)
+    drive_remote = 4
+    return drive_type == drive_remote

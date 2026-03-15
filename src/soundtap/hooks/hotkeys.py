@@ -3,6 +3,20 @@ from __future__ import annotations
 from collections.abc import Callable
 
 
+def is_valid_hotkey_expression(expression: str) -> bool:
+    if not expression.strip():
+        return False
+
+    try:
+        from pynput import keyboard
+
+        keyboard.HotKey.parse(expression)
+    except (ImportError, ValueError):
+        return False
+
+    return True
+
+
 DEFAULT_HOTKEY_TOGGLE_ENABLED = "<ctrl>+<alt>+s"
 DEFAULT_HOTKEY_TOGGLE_MUTE = "<ctrl>+<alt>+m"
 DEFAULT_HOTKEY_RELOAD_CONFIG = "<ctrl>+<alt>+r"
