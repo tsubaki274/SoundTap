@@ -127,10 +127,9 @@ volume = 40
 
 ```bash
 uv run pyinstaller --clean SoundTap.spec
-uv run python scripts/build_release.py
 ```
 
-生成された `release/SoundTap.exe` を右クリックして「ショートカットの作成」を行い、デスクトップに置けばダブルクリックで起動できます。
+生成された `SoundTap.exe` を右クリックして「ショートカットの作成」を行い、デスクトップに置けばダブルクリックで起動できます。
 
 起動後の操作はグローバルホットキーで行えます。
 
